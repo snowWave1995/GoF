@@ -1,0 +1,32 @@
+模板方法模式：父类定义算法的所有步骤，子类为一个或多个步骤提供实现。
+
+角色：
+      1.抽象类：负责实现模板方法(子类都要用的)，声明抽象方法(子类各自实现的)
+      2.具体类：实现抽象类中的抽象方法
+      
+
+public abstract class Fther{
+   void final suanfa(){     //定义一个算法的所有步骤
+        A();
+        B();
+        C();
+        D();
+  }
+  abstract void A();    //交给子类完成
+  abstract void C();    //交给子类完成
+  void B(){         //父类实现B
+    System.out.println("这是B");
+  }
+  void D){         //父类实现D
+    System.out.println("这是D");
+  } 
+}
+
+public Son extend Father{
+  public void A(){
+      System.out.println("这是子类中实现的A");  
+  }
+  public void C(){
+      System.out.println("这是子类中实现的C");  
+  }
+}
