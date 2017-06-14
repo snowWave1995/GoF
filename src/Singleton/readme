@@ -1,0 +1,54 @@
+单利模式就是只声明一个对象的模式，也是23种设计模式中最简单的一种，常用的写法有四种，饿汉，懒汉，双重加锁，静态内部类
+
+饿汉：类初始化的时候就新建一个对象，构造函数私有，外界通过getInstance方法获取实例.线程安全，缺点是在类加载时初始化实例，在一些场景无法使用，比如对         Singleton 实例的创建是依赖参数或者配置文件的，在 getInstance() 之前必须调用某个方法设置参数给它
+
+  Class Singleton{
+        private static final Singleton s = new Singleton();
+        private Singleton(){}
+        public staitc Singleton getInsance(){
+          return s;
+        }
+  }
+  
+  
+懒汉：外界调用getInstance方法时，新建一个对象,但是当多个线程同时调用时，会创建多个实例，即在多线程下不能正常工作，所以要加锁
+Class Singleton{
+      private static Singleton s = null;
+      private Singleton(){}
+      public static synchronized Singleton getInstance(){     //加了synchronized,可以正常工作，但是不高效
+            if(s == null){
+              s = new Singleton();
+            }
+            return s;
+      }
+}
+
+
+双重加锁：提高性能，线程安全，
+Class Singleton{
+    private volatile static Singleton s;    //volatile关键字确保当s被初始化成Singleton实例时，多个线程正确处理s
+    private Singleton(){}
+    public static Singleton getInstance(){
+        if(s == null){                          //可能有多个线程进入这里，所以在同步块内不进行二次检验的话就会生成多个实例
+            synchronized (Singleton.class){   //只有第一次声明时，才执行这里的代码，提高了性能。
+                if (s == null){
+                    s = new Singleton();
+                }
+            }
+        }
+        return s;
+    }
+}
+
+静态内部类：使用静态内部类创建实例，静态内部类和非静态内部类一样，都是在被调用时才会被加载！！！
+Class Singleton {  
+    private static class SingletonHolder {  // SingletonHolder 是私有的，除了 getInstance() 之外没有办法访问它，因此它是懒加载的；
+        private static final Singleton uniqueInstance = new Singleton();  
+    }  
+    private Singleton (){}  
+    public static final Singleton getInstance() {  
+        return SingletonHolder.uniqueInstance; 
+    }  
+}
+
+
