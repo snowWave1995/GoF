@@ -1,4 +1,4 @@
-单利模式就是只声明一个对象的模式，也是23种设计模式中最简单的一种，常用的写法有四种，饿汉，懒汉，双重加锁，静态内部类
+单利模式就是只声明一个对象的模式，也是23种设计模式中最简单的一种，常用的写法有五种，饿汉，懒汉，双重加锁，静态内部类，枚举
 
 饿汉：类初始化的时候就新建一个对象，构造函数私有，外界通过getInstance方法获取实例.线程安全，缺点是在类加载时初始化实例，在一些场景无法使用，比如对Singleton 实例的创建是依赖参数或者配置文件的，在 getInstance() 之前必须调用某个方法设置参数给它
 
@@ -50,5 +50,8 @@ Class Singleton {  
         return SingletonHolder.uniqueInstance; 
     }  
 }
-
+枚举：通过EasySingleton.INSTANCE来访问实例，创建枚举默认是线程安全的
+public enum EasySingleton{
+    INSTANCE;
+}
 
